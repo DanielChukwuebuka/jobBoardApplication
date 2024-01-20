@@ -4,13 +4,13 @@ const  validateSignUP = (data)=>{
 
     const validate = hapijoi.object({
     
-        firstName : hapijoi.string().empty("").min(10).max(40).trim().required().messages({
+        firstName : hapijoi.string().empty("").min(5).max(40).trim().required().messages({
             "string.empty" :"field cant be left empty",
-            "string.min" :"minimum of 10  characters"}),
+            "string.min" :"first name should be minimum of 10  characters"}),
 
         lastName : hapijoi.string().empty("").trim().min(10).max(40).required().messages({
     "string.empty" :"field cant be left empty",
-    "string.min" :"minimum is 10 characters"}),
+    "string.min" :" last name should be minimum is 10 characters"}),
 
         email : hapijoi.string().email({tlds: {allow: false}}).trim().empty('').required().messages({
     "string.empty" :"field cant be left empty",
@@ -26,9 +26,8 @@ const  validateSignUP = (data)=>{
 
 // }),
 
-password : hapijoi.string().required().empty('').min(8).max(30).trim().messages({
+password : hapijoi.string().required().empty('').min(10).max(30).trim().messages({
     "string.empty" :"field cant be left empty",
-    "string.min ":"minimum is 5 characters",
     
 }),
 

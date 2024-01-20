@@ -1,5 +1,5 @@
 const userModel = require("../onboardModel/model")
-const {validateSignUP, validateSignIn }= require("../helpers/validation")
+// const {validateSignUP, validateSignIn }= require("../helpers/validation")
 const jobModel = require("../jobModel/jobmodel")
 const bcrypt = require("bcrypt")
 require("dotenv").config()
@@ -16,24 +16,40 @@ const signUp = async ( req, res)=>{
 
        
 
-const { error} = await validateSignUP(req.body)
-if(error){
-    res.status(500).json({
-        message: error.details[0].message
-    })
-}
-else{
+// const { error} = await validateSignUP(req.body)
+// if(error){
+//     res.status(500).json({
+//         message: error.details[0].message
+//     })
+// }
+// else{
 
-const {firstName,lastName,phoneNumber, email,password, isEmployer, isJobSeeker} = req.body
+const {firstName,lastName,phoneNumber, email,password } = req.body
+if(!firstName||!lastName||!phoneNumber||!email
+    ||!password){
+        return res.status(400).json({
+            message:"fields cannot be left empty"
+        })
+    }else if(phoneNumber.length<11){
+        return res.status(400).json({
+            message:"phone number too short"
+        })
+
+    }const checkMail = await userModel.findOne({email:email})
+    if(checkMail){
+        return res.status(400).json({
+            message:"this email is associated with an account"
+        })
+    }
 
 
-const checkUser = await userModel.findOne({email: email.toLowerCase()})
-        if (!checkUser) {
-            res.status(400).json({
-                message: 'This user already exists'
-            });
+// const checkUser = await userModel.findOne({email: email.toLowerCase()})
+//         if (!checkUser) {
+//             res.status(400).json({
+//                 message: 'This user already exists'
+//             });
             
-        }
+//         }
 
 const salt = bcrypt.genSaltSync(12)
 const hashedPassword = bcrypt.hashSync(password, salt)
@@ -58,7 +74,7 @@ const user = await new userModel({
 
 if(!user){
     return res.status(404).json({
-        message: "student is not registered"
+        message: "cannot create "
     })
  }
 
@@ -96,7 +112,7 @@ message:"welcome on board"
         })
             return;
 }    
-    }
+    
     catch (error) {
         res.status(500).json({
             message: error.message
@@ -145,13 +161,13 @@ const verifyUser = async(req,res)=>{
 const login =  async (req,res) =>{
     try{
 
-        const {error} = await validateSignIn(req.body)
-        if(error){
-            res.status(500).json({
-                message: error.details[0].message
-            })
-        }
-        else{
+        // const {error} = await validateSignIn(req.body)
+        // if(error){
+        //     res.status(500).json({
+        //         message: error.details[0].message
+        //     })
+        // }
+        // else{
 
             const {email, password} = req.body
 
@@ -192,7 +208,7 @@ const login =  async (req,res) =>{
 
 
     }
-}
+
 catch(err){
         res.status(500).json({
             message:err.message
