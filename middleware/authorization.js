@@ -1,40 +1,33 @@
 const jwt = require("jsonwebtoken")
-
+const userModel = require("../onboardModel/model")
 const authorized = async (req, res, next)=>{
 try {
-const authorization = req.headers.authorization;
+let token;
 
-
-if(!authorization){
-res.status(404).json({
-    message: "youre  not authorised"
-})
+if(
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+){
+    token = req.headers.authorization.split(" ")[1]
 }
 
-const token = authorization.split(" ")[1]
 if(!token){
-res.status(401).json({
-message:"invalid token"
-
+res.status(404).json({
+    message: "authorization token is required"
 })
-
-
 }
-    const decodeToken = jwt.verify(token, process.env.secret)
 
+    const decodeToken = jwt.verify(token, process.env.secret)
+console.log(decodeToken)
     const user = await userModel.findById(decodeToken.userId)
 if(!user){
-res.status(404).json({
-    message:"user not found"
-})
-
+    res.status(404).json({
+        message:"user not found"
+    })
 }
 
-req.user = decodeToken
-
+req.user = user
     next()
-
-
 } catch (error) {
     res.status(500).json({
         message: error.message
@@ -44,4 +37,4 @@ req.user = decodeToken
 }
 
 
-module.exports = {authorized}
+module.exports = authorized

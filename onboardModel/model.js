@@ -11,19 +11,15 @@ const user = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isEmployer:{
-        type:Boolean,
-        default:false
-        
+    
+    role:{
+type: String,
+required: true ,
+enum:{ 
+values:[ "employer", "jobSeeker"], 
+message:"role can only be employer or jobseeker"
+}
     },
-    isJobSeeker:{
-        type:Boolean,
-        default:false
-    },
-    token :{
-        type: String
-    },
-
 },{timestamps: true})
 
 const userModel = mongoose.model("jobFinder", user)
