@@ -1,10 +1,11 @@
 const express = require ('express')
 const route = express.Router()
-const { signUp,login,verifyUser,getAllJobs,
+const { signUpEmployer,signUpJobSeeker,login,verifyUser,getAllJobs,
     getOneJob, postJobs,getAllRemoteJobs,getAllOnsiteJobs,partTimeJob,fullTimeJobs }= require("../controller/control")
 const authorized = require("../middleware/authorization")
 
-route.post("/signUp", signUp),
+route.post("/signUpEmployer", signUpEmployer),
+route.post("/signUpJobSeeker", signUpJobSeeker)
 route.post("/login", login  )
 route.put("/verifyUser/:id/:token", verifyUser)
 // route.post("/postJobs", authorized,postJobs)

@@ -10,20 +10,11 @@ const sendMail = require("../jobmailer")
 
 
 
-const signUp = async ( req, res)=>{
+const signUpEmployer = async ( req, res)=>{
 
     try {
 
-       
-
-// const { error} = await validateSignUP(req.body)
-// if(error){
-//     res.status(500).json({
-//         message: error.details[0].message
-//     })
-// }
-// else{
-
+    
 const {firstName,lastName,phoneNumber, email,password } = req.body
 if(!firstName||!lastName||!phoneNumber||!email
     ||!password){
@@ -42,14 +33,6 @@ if(!firstName||!lastName||!phoneNumber||!email
         })
     }
 
-
-// const checkUser = await userModel.findOne({email: email.toLowerCase()})
-//         if (!checkUser) {
-//             res.status(400).json({
-//                 message: 'This user already exists'
-//             });
-            
-//         }
 
 const salt = bcrypt.genSaltSync(12)
 const hashedPassword = bcrypt.hashSync(password, salt)
@@ -98,13 +81,95 @@ message:"welcome on board"
             message:link
         }
      )
-    //  if(isEmployer.req.body==true){
-    //     await userModelfindByIdAndUpdate(req.params.id,{isEmployer:true},{new:true})
-    // }
-    // else{
-    //     if(isJobSeeker.req.body==true){
-    //         await userModelfindByIdAndUpdate(req.params.id,{isJobSeeker:true},{new:true}) 
-    // }
+    
+    
+        res.status(201).json({
+            message: "Welcome, User created successfully",
+            data:user
+        })
+            return;
+}    
+    
+    catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+
+}
+
+const signUpJobSeeker = async ( req, res)=>{
+
+    try {
+
+    
+const {firstName,lastName,phoneNumber, email,password } = req.body
+if(!firstName||!lastName||!phoneNumber||!email
+    ||!password){
+        return res.status(400).json({
+            message:"fields cannot be left empty"
+        })
+    }else if(phoneNumber.length<11){
+        return res.status(400).json({
+            message:"phone number too short"
+        })
+
+    }const checkMail = await userModel.findOne({email:email})
+    if(checkMail){
+        return res.status(400).json({
+            message:"this email is associated with an account"
+        })
+    }
+
+
+const salt = bcrypt.genSaltSync(12)
+const hashedPassword = bcrypt.hashSync(password, salt)
+
+const token= await jwt.sign({firstName,lastName,email},process.env.secret,{expiresIn:"1 day"})
+
+
+    
+
+const user = await new userModel({
+
+    firstName,
+    lastName,
+    phoneNumber,
+     email:email.toLowerCase(),
+     password : hashedPassword,
+    //  picture:[{
+    
+
+    //  }]
+})
+
+if(!user){
+    return res.status(404).json({
+        message: "cannot create "
+    })
+ }
+
+
+user.token=token
+
+await user.save()
+
+// const subject = "Kindly verify"
+// await jwt.verify(token, process.env.secret)
+// const link =  (`${req.protocol}://${req.get('host')}/verify/${user.id}/${user.token}`, user.firstName, user.lastName)
+// const html = generateDynamicEmail(firstName, lastName, link)
+// message:"welcome on board"
+
+
+//      sendMail(
+//         {
+//             email:user.email,
+//             html:html,
+//             subject,
+//             message:link
+//         }
+//      )
+    
     
         res.status(201).json({
             message: "Welcome, User created successfully",
@@ -387,7 +452,8 @@ const postJobs= async (req,res)=>{
 
 
 module.exports = {
-    signUp,
+    signUpEmployer,
+    signUpJobSeeker,
     verifyUser,
     login,
     postJobs,
