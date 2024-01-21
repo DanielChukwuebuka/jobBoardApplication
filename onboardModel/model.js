@@ -2,11 +2,31 @@ const mongoose = require("mongoose")
 
 const user = new mongoose.Schema({
 
-    firstName : String,
-    lastName : String,
-    email : String,
-    phoneNumber : String,
-    password : String,
+    firstName : { 
+        type:String,
+        required: [true, "firstName is required"]
+
+    },
+    lastName : { 
+        type:String,
+        required: [true, "lastName is required"]
+
+    },
+    email :{ 
+        type:String,
+        required: [true, "email is required"]
+
+    },
+    phoneNumber :{ 
+        type:String,
+        required: [true, "phonenumber is required"]
+
+    },
+    password : { 
+        type:String,
+        required: [true, "password is required"]
+
+    },
     isVerified :{
         type: Boolean,
         default: false

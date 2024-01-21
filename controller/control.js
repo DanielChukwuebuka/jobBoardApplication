@@ -10,15 +10,7 @@ const sendMail = require("../jobmailer");
 const signUp = async (req, res) => {
   try {
     const { firstName, lastName, phoneNumber, email, password, role } = req.body;
-    if (!firstName || !lastName || !phoneNumber || !email || !password || !role) {
-      return res.status(400).json({
-        message: "fields cannot be left empty",
-      });
-    } else if (phoneNumber.length < 11) {
-      return res.status(400).json({
-        message: "phone number too short",
-      });
-    }
+    
     const checkMail = await userModel.findOne({ email: email });
     if (checkMail) {
       return res.status(400).json({
