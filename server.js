@@ -8,7 +8,8 @@ app.use(express.json());
 
 app.use(cors({
 origin: '*',
-methods: ["GET"]
+methods: ["GET", "POST", "UPDATE", "DELETE"]
+
 }))
 
 require("./config/config")
