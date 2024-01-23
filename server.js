@@ -1,31 +1,23 @@
-
-const express = require('express')
-const cors = require("cors")
-
+const express = require("express");
+const cors = require("cors");
+require("./config/config");
+require("dotenv").config();
 const app = express();
+const port = process.env.port;
+
+const route = require("./router/route");
+
+app.use(cors({ origin: "*"}))
 
 app.use(express.json());
 
-app.use(cors({
-origin: '*',
-methods: ["GET", "POST", "UPDATE", "DELETE"]
 
-}))
+app.use("/api/v1", route);
 
-require("./config/config")
+app.get("/", (req, res) => {
+  res.send("Welcome to job finder");
+});
 
-
-require("dotenv").config()
-
-const route = require("./router/route")
-
-const port = process.env.port
-
-app.get('/', (req, res) => {
-    res.send("Welcome to job finder");
-})
-app.use('/api/v1', route )
-
-app.listen(port, ()=>{
-    console.log (`server is up and running on ${port} `)
-} )
+app.listen(port, () => {
+  console.log(`server is up and running on ${port} `);
+});

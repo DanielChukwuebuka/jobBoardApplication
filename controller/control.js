@@ -215,29 +215,29 @@ const getAllJobs = async (req, res) => {
   }
 };
 
-const getOneJob = async (req, res) => {
+// const getOneJob = async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const job = await jobModel.findById(id);
+//     if (!job) {
+//       return res.status(404).json({
+//         message: `job with id ${id} not found`,
+//       });
+//     } else {
+//       return res.status(200).json({
+//         message: `Here is the job with id ${id}`,
+//         data: job,
+//       });
+//     }
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+const remoteJobs = async () => {
   try {
-    const id = req.params.id;
-    const job = await jobModel.findById(id);
-    if (!job) {
-      return res.status(404).json({
-        message: `job with id ${id} not found`,
-      });
-    } else {
-      return res.status(200).json({
-        message: `Here is the job with id ${id}`,
-        data: job,
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-const getAllRemoteJobs = async () => {
-  try {
-    const remoteJobs = await jobModel.find({ Description: remoteJobs });
+    const remoteJobs = await jobModel.find({ category: remoteJobs });
     if (!remoteJobs) {
       return res.status(404).json({
         message: "no remote jobs available",
@@ -255,17 +255,17 @@ const getAllRemoteJobs = async () => {
   }
 };
 
-const getAllOnsiteJobs = async (req, res) => {
+const hybridJobs = async (req, res) => {
   try {
-    const onSiteJob = await jobModel.find({ Description: onSite });
-    if (!onSiteJob) {
+    const hybridJobs = await jobModel.find({ category : hybridJobs });
+    if (!hybridJobs) {
       return res.status(404).json({
-        message: "no on site jobs available",
+        message: "no hybrid jobs available",
       });
     } else {
       return res.status(200).json({
-        message: "here are all on site jobs",
-        data: onSiteJob.length,
+        message: "here are all the available hybrid jobs",
+        data: hybridJobs.length,
       });
     }
   } catch (error) {
@@ -274,17 +274,17 @@ const getAllOnsiteJobs = async (req, res) => {
     });
   }
 };
-const partTimeJobs = async (req, res) => {
+const onSiteJobs = async (req, res) => {
   try {
-    const partTimeJob = await jobModel.find({ Description: partTimeJob });
-    if (!onSiteJob) {
+    const onsiteJobs = await jobModel.find({ category: onsiteJobs });
+    if (!onsiteJobs ) {
       return res.status(404).json({
-        message: "no  part time jobs available",
+        message: "no  onsite jobs available",
       });
     } else {
       return res.status(200).json({
-        message: "here are all part time jobs",
-        data: partTimeJob.length,
+        message: "here are all the onsite jobs",
+        data: onsiteJobs.length,
       });
     }
   } catch (error) {
@@ -294,25 +294,25 @@ const partTimeJobs = async (req, res) => {
   }
 };
 
-const fullTimeJobs = async (req, res) => {
-  try {
-    const fullTimeJob = await jobModel.find({ Description: fullTimeJob });
-    if (!fullTimeJob) {
-      return res.status(404).json({
-        message: "no  full time jobs available",
-      });
-    } else {
-      return res.status(200).json({
-        message: "here are all part time jobs",
-        data: fullTimeJob.length,
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-};
+// const  remoteJobs = async (req, res) => {
+//   try {
+//     const remoteJobs = await jobModel.find({ Description: remoteJobs });
+//     if (!remoteJobs) {
+//       return res.status(404).json({
+//         message: "no  remote jobs available",
+//       });
+//     } else {
+//       return res.status(200).json({
+//         message: "here are all remote jobs",
+//         data: remoteJobs.length,
+//       });
+//     }
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
 
 module.exports = {
   signUp,
@@ -320,9 +320,8 @@ module.exports = {
   login,
   postJobs,
   getAllJobs,
-  getOneJob,
-  getAllRemoteJobs,
-  getAllOnsiteJobs,
-  partTimeJobs,
-  fullTimeJobs,
+  remoteJobs,
+  onSiteJobs,
+  hybridJobs,
+  
 };

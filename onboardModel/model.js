@@ -27,11 +27,7 @@ const user = new mongoose.Schema({
         required: [true, "password is required"]
 
     },
-    isVerified :{
-        type: Boolean,
-        default: false
-    },
-    
+
     role:{
 type: String,
 required: true ,
