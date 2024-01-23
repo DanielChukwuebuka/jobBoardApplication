@@ -78,7 +78,7 @@ const signUp = async (req, res) => {
 
 
 
-// const restrictTo = async(req, res);
+
 
 const verifyUser = async (req, res) => {
   try {
@@ -197,6 +197,8 @@ next()
 const getAllJobs = async (req, res) => {
   try {
     const getAllJobs = await jobModel.find();
+    // const queryParams = req.query
+    // console.log(queryParams)
     if (getAllJobs.length === 0) {
       return res.status(404).json({
         message: "No jobs available",
@@ -215,37 +217,18 @@ const getAllJobs = async (req, res) => {
   }
 };
 
-// const getOneJob = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const job = await jobModel.findById(id);
-//     if (!job) {
-//       return res.status(404).json({
-//         message: `job with id ${id} not found`,
-//       });
-//     } else {
-//       return res.status(200).json({
-//         message: `Here is the job with id ${id}`,
-//         data: job,
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-const remoteJobs = async () => {
+const getOneJob = async (req, res) => {
   try {
-    const remoteJobs = await jobModel.find({ category: remoteJobs });
-    if (!remoteJobs) {
+    const id = req.params.id;
+    const job = await jobModel.findById(id);
+    if (!job) {
       return res.status(404).json({
-        message: "no remote jobs available",
+        message: `job with id ${id} not found`,
       });
     } else {
       return res.status(200).json({
-        message: "here are all remote jobs",
-        data: remoteJobs.length,
+        message: `Here is the job with id ${id}`,
+        data: job,
       });
     }
   } catch (error) {
@@ -255,51 +238,70 @@ const remoteJobs = async () => {
   }
 };
 
-const hybridJobs = async (req, res) => {
-  try {
-    const hybridJobs = await jobModel.find({ category : hybridJobs });
-    if (!hybridJobs) {
-      return res.status(404).json({
-        message: "no hybrid jobs available",
-      });
-    } else {
-      return res.status(200).json({
-        message: "here are all the available hybrid jobs",
-        data: hybridJobs.length,
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-const onSiteJobs = async (req, res) => {
-  try {
-    const onsiteJobs = await jobModel.find({ category: onsiteJobs });
-    if (!onsiteJobs ) {
-      return res.status(404).json({
-        message: "no  onsite jobs available",
-      });
-    } else {
-      return res.status(200).json({
-        message: "here are all the onsite jobs",
-        data: onsiteJobs.length,
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
+const getAllJobsByType = async (req, res) =>{
+
+try {
+
+  const query = req.query.jobType ? {jobType: req.query.jobType} : {}
+  const jobs = await jobModel.find(query)
+  res.status(200).json({
+    message:"All jobs by type",
+    length: jobs.length,
+    data: jobs
+  })
+
+} catch (error) {
+   res.status(500).json({
+    message: error.message
+   })
+}
+
+}
+
+
+
+
+
+
+module.exports = {
+  signUp,
+  verifyUser,
+  login,
+  postJobs,
+  getAllJobs,
+  getOneJob,
+  getAllJobsByType
+
 };
 
-// const  remoteJobs = async (req, res) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const remoteJobs = async () => {
 //   try {
-//     const remoteJobs = await jobModel.find({ Description: remoteJobs });
+//     const remoteJobs = await jobModel.find({ category: remoteJobs });
 //     if (!remoteJobs) {
 //       return res.status(404).json({
-//         message: "no  remote jobs available",
+//         message: "no remote jobs available",
 //       });
 //     } else {
 //       return res.status(200).json({
@@ -314,14 +316,6 @@ const onSiteJobs = async (req, res) => {
 //   }
 // };
 
-module.exports = {
-  signUp,
-  verifyUser,
-  login,
-  postJobs,
-  getAllJobs,
-  remoteJobs,
-  onSiteJobs,
-  hybridJobs,
-  
-};
+
+
+
