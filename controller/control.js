@@ -48,18 +48,18 @@ const signUp = async (req, res) => {
       );
 
 
-    const link = (`${req.protocol}://${req.get("host")}/verify/${user.id}/${user.token}`,
-      user.firstName,
-      user.lastName);
-    const html = generateDynamicEmail(firstName, lastName, link);
+    // const link = (`${req.protocol}://${req.get("host")}/verify/${user.id}/${user.token}`,
+    //   user.firstName,
+    //   user.lastName);
+    // const html = generateDynamicEmail(firstName, lastName, link);
 
 
-    sendMail({
-      email: user.email,
-      html: html,
-      subject:"Kindly verify",
-      message: link,
-    });
+    // sendMail({
+    //   email: user.email,
+    //   html: html,
+    //   subject:"Kindly verify",
+    //   message: link,
+    // });
 
     res.status(201).json({
       message: "Welcome, User created successfully",
