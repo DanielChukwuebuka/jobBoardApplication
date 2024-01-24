@@ -1,11 +1,9 @@
 const userModel = require("../onboardModel/model");
-// const {validateSignUP, validateSignIn }= require("../helpers/validation")
 const jobModel = require("../jobModel/jobmodel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { generateDynamicEmail } = require("../jobhtml");
-const sendMail = require("../jobmailer");
+
 
 const signUp = async (req, res) => {
   try {
@@ -156,18 +154,6 @@ const login = async (req, res) => {
 const postJobs = async (req, res,next) => {
   try {
 
-    // let token;
-
-    // if(
-    //     req.headers.authorization && 
-    //     req.headers.authorization.startsWith("Bearer")
-    // ){
-    // token = req.headers.authorization.split(" ")[1]
-    // };
-
-    // const decoded = await promisify(jwt.verify)(token, process.env.secret);
-    // const currentUser = await userModel.findById(decoded.id)
-
     const  jobs =
       req.body;
 console.log(jobs)
@@ -182,7 +168,7 @@ console.log(jobs)
 
 const job = await jobModel.create(req.body)
 res.status(201).json({
-    message: "jobs created successfully",
+    message: "job created successfully",
     data:job
 })
 
@@ -207,7 +193,7 @@ const getAllJobs = async (req, res) => {
       return res.status(200).json({
         message: "Here are all the jobs available",
         data: getAllJobs,
-        length:getAllJobs.length,
+        length:getAllJobs.length + " " +  "jobs are available currently",
       });
     }
   } catch (error) {
@@ -246,7 +232,7 @@ try {
   const jobs = await jobModel.find(query)
   res.status(200).json({
     message:"All jobs by type",
-    length: jobs.length,
+    length: jobs.length + " " + "are currently avavilable",
     data: jobs
   })
 
