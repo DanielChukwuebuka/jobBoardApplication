@@ -48,18 +48,7 @@ const signUp = async (req, res) => {
       );
 
 
-    // const link = (`${req.protocol}://${req.get("host")}/verify/${user.id}/${user.token}`,
-    //   user.firstName,
-    //   user.lastName);
-    // const html = generateDynamicEmail(firstName, lastName, link);
-
-
-    // sendMail({
-    //   email: user.email,
-    //   html: html,
-    //   subject:"Kindly verify",
-    //   message: link,
-    // });
+    
 
     res.status(201).json({
       message: "Welcome, User created successfully",
@@ -183,8 +172,7 @@ next()
 const getAllJobs = async (req, res) => {
   try {
     const getAllJobs = await jobModel.find();
-    // const queryParams = req.query
-    // console.log(queryParams)
+
     if (getAllJobs.length === 0) {
       return res.status(404).json({
         message: "No jobs available",

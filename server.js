@@ -7,9 +7,11 @@ const port = process.env.port;
 
 const route = require("./router/route");
 
-app.use(cors());
-
 app.use(express.json());
+app.use(cors({
+  origin: "*"
+}));
+
 
 
 app.use("/api/v1", route);
