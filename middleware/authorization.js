@@ -12,26 +12,41 @@ if(
 }
 
 if(!token){
-res.status(404).json({
+return res.status(404).json({
     message: "authorization token is required"
 })
 }
 
     const decodeToken = jwt.verify(token, process.env.secret)
-console.log(decodeToken)
+console.log("Token:  "+decodeToken)
     const user = await userModel.findById(decodeToken.userId)
+    console.log("user: "+user)
 if(!user){
-    res.status(404).json({
+    return res.status(404).json({
         message:"user not found"
     })
 }
+if(user.blacklist.includes(token)){
+    return res.status(400).json({
+        message: "authorization failed : please login again"
+    })
+}
+
 
 req.user = user
     next()
+
+ 
 } catch (error) {
-    res.status(500).json({
-        message: error.message
+    if(error instanceof jwt.JsonWebTokenError){
+    return res.status(500).json({
+        message: "session timeout, please login again"
     })
+    return res.status(500).json({
+        message: " error authenticating " + error.message
+    })
+
+}
 }
 
 }

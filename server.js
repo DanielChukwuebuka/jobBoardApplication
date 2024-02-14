@@ -4,13 +4,12 @@ require("./config/config");
 require("dotenv").config();
 const app = express();
 const port = process.env.port;
-
 const route = require("./router/route");
+app.use(express.json());
+
 app.use(cors({
   origin: "*"
 }));
-app.use(express.json());
-
 
 
 
